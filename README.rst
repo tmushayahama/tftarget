@@ -23,8 +23,9 @@ See the `documentation for virtualenvwrapper`_ if you think you'll do any other 
 
 Now install the rest of the dependencies by running ``pip install -r requirements.txt``.
 
-At this point you should be good to go!
-Simply run the ``python manage.py runserver`` command and visit ``127.0.0.1:8000`` in a browser to see the site.
+At this point you're arguably ready to go.
+See the next section for instructions on installing and configuring MySQL, or just comment out the ``DATABASES`` variable in ``settings.py``.
+Since this is a database-driven application, the search function will naturally not work if you just comment out the ``DATABASES`` variable, but you will at least have the rest of the server working.
 
 
 MySQL
