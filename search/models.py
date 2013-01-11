@@ -1,4 +1,7 @@
+import json
+
 from django.db import models
+
 
 class Association(models.Model):
     gene = models.CharField(max_length=8)
@@ -12,5 +15,7 @@ class Association(models.Model):
     control = models.CharField(max_length=256)
     quality = models.CharField(max_length=256)
 
-    def __str__(self):
-        return str(self.__dict__)
+    def __repr__(self):
+        d = self.__dict__
+        d.pop('_state')
+        return json.dumps(d)

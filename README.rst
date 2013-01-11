@@ -11,7 +11,7 @@ Quickstart
 If you have the dependencies installed, simply run ``python manage.py runserver``, then visit ``127.0.0.1:8000`` in a browser.
 
 If you don't have the dependencies installed, start by getting Python 2.7.3.
-You can `download it for free` from python.org.
+You can `download it for free`_ from python.org.
 
 Now, you'll need to get pip, the Python Package Manager.
 For all operating systems, `these instructions`_ will suffice.
@@ -72,11 +72,11 @@ Other highly recommended tutorials include `Dive into Python`_ and `Learn Python
 About Django
 ------------
 
-The `Django Tutorial` is an excellent four-part starter series on Django.
+The `Django Tutorial`_ is an excellent four-part starter series on Django.
 It will assume that you know at least a little Python though.
 
 
-.. _download if for free: http://python.org/download/releases/2.7.3/
+.. _download it for free: http://python.org/download/releases/2.7.3/
 .. _these instructions: http://pypi.python.org/pypi/setuptools
 .. _Stack Overflow discussion: http://stackoverflow.com/questions/4750806/how-to-install-pip-on-windows
 .. _documentation for virtualenvwrapper: http://virtualenvwrapper.readthedocs.org/en/latest/
