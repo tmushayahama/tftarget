@@ -1,0 +1,86 @@
+==================================
+Transcription Factor Target Search
+==================================
+
+This site will allow users to search for gene transcription factors and find potential target genes.
+
+
+Quickstart
+----------
+
+If you have the dependencies installed, simply run ``python manage.py runserver``, then visit ``127.0.0.1:8000`` in a browser.
+
+If you don't have the dependencies installed, start by getting Python 2.7.3.
+You can `download it for free` from python.org.
+
+Now, you'll need to get pip, the Python Package Manager.
+For all operating systems, `these instructions`_ will suffice.
+On Debian-based Linux distributions, an easier way to get pip is to run ``apt-get install python-setuptools; easy_install pip``.
+Special note to Windows users:  you may need to edit your path if the instruction above don't work, see this `Stack Overflow discussion`_.
+
+If you plan doing any other Python projects, particularly Django ones, you should probably ``pip install virtualenv virtualenvwrapper`` and create a virtual environment for the project.
+See the `documentation for virtualenvwrapper`_ if you think you'll do any other large Python projects, otherwise you can skip this step.
+
+Now install the rest of the dependencies by running ``pip install -r requirements.txt``.
+
+At this point you should be good to go!
+Simply run the ``python manage.py runserver`` command and visit ``127.0.0.1:8000`` in a browser to see the site.
+
+
+MySQL
+-----
+
+The quickstart above is sufficient for starting the site, but eventually you'll need to install MySQL and setup Django to use it.
+MySQL can be downloaded from `their website`_ and installed by following the directions.
+During install, you should be asked to create a password for the ``root`` user.
+Do this, and don't forget the password, you will need it soon and may need it later in an emergency.
+On Debian-based Linux distributions, an easier way to get MySQL is to run ``apt-get install mysql-server``.
+
+Once MySQL is installed, you'll need to get the Python library for talking to it.
+If you're on a Debian-based Linux distribution, you can install it with ``apt-get install python-mysqldb``.
+Other Linux distributions should have a similar package available, but the Python MySQLdb library cannot be installed on Windows without having to edit a few files manually.
+Talk to me (Joel Friedly) and I'll try to get you working on Windows.
+If you're unsure whether or not your MySQLdb installation worked, open a Python interpreter and run ``import MySQLdb``.
+
+Once the Python library is installed, you'll need to create your ``tftarget`` MySQL user.
+To do this, run ``mysql -uroot -p`` and enter the root password that you picked above, then input these SQL commands at the prompt::
+
+    CREATE USER 'tftarget'@'localhost' IDENTIFIED BY '$PASSWORD';
+    CREATE DATABASE tftarget;
+    GRANT ALL PRIVILEGES ON *.* to 'tftarget'@'localhost' WITH GRANT OPTION;
+
+MySQL should tell you that each query was ok.
+Exit the MySQL prompt and now create a file in this directory called ``local_settings.py``.
+Put the following lines into the file::
+
+    from settings import *
+
+    DATABASES['default']['PASSWORD'] = '$PASSWORD'
+
+Save the file and now run ``python manage.py syncdb``.
+This will create necessary tables in MySQL and a Django admin user.
+
+
+About Python
+------------
+
+The best introduction to Python that I know of is the `Python Tutorial`_ at python.org.
+Other highly recommended tutorials include `Dive into Python`_ and `Learn Python the Hard Way`_.
+
+
+About Django
+------------
+
+The `Django Tutorial` is an excellent four-part starter series on Django.
+It will assume that you know at least a little Python though.
+
+
+.. _download if for free: http://python.org/download/releases/2.7.3/
+.. _these instructions: http://pypi.python.org/pypi/setuptools
+.. _Stack Overflow discussion: http://stackoverflow.com/questions/4750806/how-to-install-pip-on-windows
+.. _documentation for virtualenvwrapper: http://virtualenvwrapper.readthedocs.org/en/latest/
+.. _their website: http://www.mysql.com/downloads/mysql/
+.. _Python Tutorial: http://docs.python.org/2/tutorial/
+.. _Dive into Python: http://www.diveintopython.net/
+.. _Learn Python the Hard Way: http://learnpythonthehardway.org/
+.. _Django Tutorial: https://docs.djangoproject.com/en/dev/intro/tutorial01/
