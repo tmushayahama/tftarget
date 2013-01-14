@@ -64,9 +64,8 @@ South makes migrating table schemas easy, without losing your data.
 Information on South can be found on `their tutorial`_, and you should already have it installed if the ``pip install -r requirements.txt`` worked.
 This step isn't strictly necessary if you won't be doing much development on anything affecting the database or if you know how to use mysql reasonably well, but if you'd like to use South, the first thing you'll need to do is open the ``settings.py`` file and comment out lines in INSTALLED_APPS that list apps that we built.
 Currently, the only app that we've built is called 'search', so just comment out the line that says ``'search',``.
-Now run a ``python manage.py syncdb``, create a Django superuser, and then uncomment the line(s) you just commented out and run these commands for each app that we installed replacing $APP_NAME with the name of the app::
+Now run a ``python manage.py syncdb``, create a Django superuser, and then uncomment the line(s) you just commented out and run this command for each app that we installed replacing $APP_NAME with the name of the app::
 
-    python manage.py schemamigration $APP_NAME --initial
     python manage.py migrate $APP_NAME
 
 If you didn't setup up South, you can now run ``python manage.py syncdb``.
