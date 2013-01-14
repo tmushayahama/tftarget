@@ -18,7 +18,7 @@ For all operating systems, `these instructions`_ will suffice.
 On Debian-based Linux distributions, an easier way to get pip is to run ``apt-get install python-setuptools; easy_install pip``.
 Special note to Windows users:  you may need to edit your path if the instruction above don't work, see this `Stack Overflow discussion`_.
 
-If you plan doing any other Python projects, particularly Django ones, you should probably ``pip install virtualenv virtualenvwrapper`` and create a virtual environment for the project.
+If you plan on doing any other Python projects, particularly Django ones, you should probably ``pip install virtualenv virtualenvwrapper`` and create a virtual environment for the project.
 See the `documentation for virtualenvwrapper`_ if you think you'll do any other large Python projects, otherwise you can skip this step.
 
 Now install the rest of the dependencies by running ``pip install -r requirements.txt``.
@@ -44,7 +44,7 @@ Talk to me (Joel Friedly) and I'll try to get you working on Windows.
 If you're unsure whether or not your MySQLdb installation worked, open a Python interpreter and run ``import MySQLdb``.
 
 Once the Python library is installed, you'll need to create your ``tftarget`` MySQL user.
-To do this, run ``mysql -uroot -p`` and enter the root password that you picked above, then input these SQL commands at the prompt::
+To do this, run ``mysql -uroot -p`` and enter the root password that you picked above, then input these SQL commands at the prompt, where $PASSWORD is a new password that you choose::
 
     CREATE USER 'tftarget'@'localhost' IDENTIFIED BY '$PASSWORD';
     CREATE DATABASE tftarget;
@@ -52,14 +52,27 @@ To do this, run ``mysql -uroot -p`` and enter the root password that you picked 
 
 MySQL should tell you that each query was ok.
 Exit the MySQL prompt and now create a file in this directory called ``local_settings.py``.
-Put the following lines into the file::
+Put the following lines into the file and save it::
 
     from settings import *
 
     DATABASES['default']['PASSWORD'] = '$PASSWORD'
 
-Save the file and now run ``python manage.py syncdb``.
+You will likely end up needing to learn how to use Django South as well.
+Databases complain whenever a table schema is changed, and anytime you make a change to a class in a models.py file it represents a change to a table schema.
+South makes migrating table schemas easy, without losing your data.
+Information on South can be found on `their tutorial`_, and you should already have it installed if the ``pip install -r requirements.txt`` worked.
+This step isn't strictly necessary if you won't be doing much development on anything affecting the database or if you know how to use mysql reasonably well, but if you'd like to use South, run these commands for each app that we build::
+
+    python manage.py schemamigration $APP_NAME --initial
+    python manage.py migrate $APP_NAME
+
+Currently, our only app is called 'search', so replace $APP_NAME with 'search' above (without quotes).
+If we add more apps, you'll need to run each of the above commands for each app.
+
+Whether you setup up South or not, you can now run ``python manage.py syncdb``.
 This will create necessary tables in MySQL and a Django admin user.
+In order to load the latest SQL dump that I've been using, run ``mysql -uroot -p tftarget < db.sql`` and give the root user's password at the prompt.
 
 
 About Python
@@ -81,6 +94,7 @@ It will assume that you know at least a little Python though.
 .. _Stack Overflow discussion: http://stackoverflow.com/questions/4750806/how-to-install-pip-on-windows
 .. _documentation for virtualenvwrapper: http://virtualenvwrapper.readthedocs.org/en/latest/
 .. _their website: http://www.mysql.com/downloads/mysql/
+.. _their tutorial: http://south.readthedocs.org/en/latest/tutorial/part1.html
 .. _Python Tutorial: http://docs.python.org/2/tutorial/
 .. _Dive into Python: http://www.diveintopython.net/
 .. _Learn Python the Hard Way: http://learnpythonthehardway.org/
