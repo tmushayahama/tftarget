@@ -62,15 +62,14 @@ You will likely end up needing to learn how to use Django South as well.
 Databases complain whenever a table schema is changed, and anytime you make a change to a class in a models.py file it represents a change to a table schema.
 South makes migrating table schemas easy, without losing your data.
 Information on South can be found on `their tutorial`_, and you should already have it installed if the ``pip install -r requirements.txt`` worked.
-This step isn't strictly necessary if you won't be doing much development on anything affecting the database or if you know how to use mysql reasonably well, but if you'd like to use South, run these commands for each app that we build::
+This step isn't strictly necessary if you won't be doing much development on anything affecting the database or if you know how to use mysql reasonably well, but if you'd like to use South, the first thing you'll need to do is open the ``settings.py`` file and comment out lines in INSTALLED_APPS that list apps that we built.
+Currently, the only app that we've built is called 'search', so just comment out the line that says ``'search',``.
+Now run a ``python manage.py syncdb``, create a Django superuser, and then uncomment the line(s) you just commented out and run these commands for each app that we installed replacing $APP_NAME with the name of the app::
 
     python manage.py schemamigration $APP_NAME --initial
     python manage.py migrate $APP_NAME
 
-Currently, our only app is called 'search', so replace $APP_NAME with 'search' above (without quotes).
-If we add more apps, you'll need to run each of the above commands for each app.
-
-Whether you setup up South or not, you can now run ``python manage.py syncdb``.
+If you didn't setup up South, you can now run ``python manage.py syncdb``.
 This will create necessary tables in MySQL and a Django admin user.
 In order to load the latest SQL dump that I've been using, run ``mysql -uroot -p tftarget < db.sql`` and give the root user's password at the prompt.
 
