@@ -8,42 +8,72 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Association'
-        db.create_table('search_association', (
+        # Adding model 'Experiment'
+        db.create_table('search_experiment', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('gene', self.gf('django.db.models.fields.CharField')(max_length=8)),
+            ('gene', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('pmid', self.gf('django.db.models.fields.IntegerField')()),
-            ('family', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('member', self.gf('django.db.models.fields.CharField')(max_length=8)),
-            ('species', self.gf('django.db.models.fields.CharField')(max_length=32)),
-            ('exp_tissues', self.gf('django.db.models.fields.CharField')(max_length=256)),
-            ('experiment', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('num_replicates', self.gf('django.db.models.fields.IntegerField')()),
-            ('control', self.gf('django.db.models.fields.CharField')(max_length=256)),
-            ('quality', self.gf('django.db.models.fields.CharField')(max_length=256)),
+            ('transcription_family', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('species', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('expt_name', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('replicates', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('control', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('quality', self.gf('django.db.models.fields.CharField')(max_length=50)),
         ))
-        db.send_create_signal('search', ['Association'])
+        db.send_create_signal('search', ['Experiment'])
+
+        # Adding model 'Transcription'
+        db.create_table('search_transcription', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('expt_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['search.Experiment'])),
+            ('transcription_factor', self.gf('django.db.models.fields.CharField')(max_length=255)),
+        ))
+        db.send_create_signal('search', ['Transcription'])
+
+        # Adding model 'Tissue'
+        db.create_table('search_tissue', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('expt_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['search.Experiment'])),
+            ('tissue_name', self.gf('django.db.models.fields.CharField')(max_length=255)),
+        ))
+        db.send_create_signal('search', ['Tissue'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Association'
-        db.delete_table('search_association')
+        # Deleting model 'Experiment'
+        db.delete_table('search_experiment')
+
+        # Deleting model 'Transcription'
+        db.delete_table('search_transcription')
+
+        # Deleting model 'Tissue'
+        db.delete_table('search_tissue')
 
 
     models = {
-        'search.association': {
-            'Meta': {'object_name': 'Association'},
-            'control': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'exp_tissues': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'experiment': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
-            'family': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'gene': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
+        'search.experiment': {
+            'Meta': {'object_name': 'Experiment'},
+            'control': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'expt_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'gene': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'member': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'num_replicates': ('django.db.models.fields.IntegerField', [], {}),
             'pmid': ('django.db.models.fields.IntegerField', [], {}),
-            'quality': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'species': ('django.db.models.fields.CharField', [], {'max_length': '32'})
+            'quality': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'replicates': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'species': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'transcription_family': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        'search.tissue': {
+            'Meta': {'object_name': 'Tissue'},
+            'expt_id': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['search.Experiment']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'tissue_name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
+        'search.transcription': {
+            'Meta': {'object_name': 'Transcription'},
+            'expt_id': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['search.Experiment']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'transcription_factor': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         }
     }
 
