@@ -58,19 +58,36 @@ Put the following lines into the file and save it::
 
     DATABASES['default']['PASSWORD'] = '$PASSWORD'
 
+Using South
+'''''''''''
+
 You will likely end up needing to learn how to use Django South as well.
 Databases complain whenever a table schema is changed, and anytime you make a change to a class in a models.py file it represents a change to a table schema.
 South makes migrating table schemas easy, without losing your data.
 Information on South can be found on `their tutorial`_, and you should already have it installed if the ``pip install -r requirements.txt`` worked.
 This step isn't strictly necessary if you won't be doing much development on anything affecting the database or if you know how to use mysql reasonably well, but if you'd like to use South, the first thing you'll need to do is open the ``settings.py`` file and comment out lines in INSTALLED_APPS that list apps that we built.
 Currently, the only app that we've built is called 'search', so just comment out the line that says ``'search',``.
-Now run a ``python manage.py syncdb``, create a Django superuser, and then uncomment the line(s) you just commented out and run this command for each app that we installed replacing $APP_NAME with the name of the app::
+Now run a ``python manage.py syncdb``, and create a Django admin user by following the prompts.
+Finally, uncomment the line(s) you just commented out and run this command for each app that we built, replacing $APP_NAME with the name of the app::
 
     python manage.py migrate $APP_NAME
 
+Conclusion
+''''''''''
+
 If you didn't setup up South, you can now run ``python manage.py syncdb``.
 This will create necessary tables in MySQL and a Django admin user.
-In order to load the latest SQL dump that I've been using, run ``mysql -uroot -p tftarget < db.sql`` and give the root user's password at the prompt.
+In order to load the latest SQL dump, run ``mysql -uroot -p tftarget < insert.sql`` and give the root user's password at the prompt.
+
+What to do if the ID's are Wrong
+''''''''''''''''''''''''''''''''
+
+If you run into errors that rows are attempting to foreign key to other rows that don't exist when you're trying to import the data, I've figured out what to do.
+First, delete all the data in each table that currently contains data using the SQL command ``DELETE FROM $TABLE_NAME``.
+Then, run ``ALTER TABLE $TABLE_NAME AUTO_INCREMENT=n`` to set the AUTO_INCREMENT value back down to one (or any other value).
+You should now be able to retry the ``mysql -uroot -p tftarget < insert.sql`` command and hopefully it will work.
+If it doesn't don't worry, we're just using fake data for now.
+Do NOT do this on a production database.
 
 
 About Python
