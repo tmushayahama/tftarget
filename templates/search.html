@@ -7,6 +7,9 @@
     {% endfor %}
 </ul>
 {% endif %}
+Search
+<br>
+<br>
 <form action="{% url search.views.search %}" method="post" class="uniForm">
     {% csrf_token %}
     {{ form|as_uni_form }}
