@@ -1,12 +1,5 @@
 {% load i18n uni_form_tags %}
 
-{% if response %}
-<ul class="custom_error">
-    {% for reason in response.response.response_reason_text %}
-    <li>{{ reason }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
 Search
 <br>
 <br>
