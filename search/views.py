@@ -17,7 +17,7 @@ def search(request):
     if form.cleaned_data['tissue_name']:
         tissue_name = form.cleaned_data.pop('tissue_name')
         tissues = Tissue.objects.filter(tissue_name=tissue_name)
-        results = set(t.expt_id for t in tissues)
+        results = results.union(t.expt_id for t in tissues)
 
     if form.cleaned_data['transcription_factor']:
         factor = form.cleaned_data.pop('transcription_factor')
@@ -28,7 +28,13 @@ def search(request):
             results = results.union(set(t.expt_id for t in factors))
 
     def get_experiments(key, value):
-        s = "Experiment.objects.filter(%s='%s')" % (key, value)
+        """Since the form returns key:value pairs that we can filter on
+        directly, do that.  But since keyword argument names can't be passed
+        as strings, eval them.
+        """
+        # This feels hacky and is probably a SQL injection vulnerability, but
+        # it is elegant.
+        return eval("Experiment.objects.filter(%s='%s')" % (key, value))
         return eval(s)
 
     for key, value in form.cleaned_data.iteritems():
