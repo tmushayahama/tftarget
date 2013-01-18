@@ -35,7 +35,6 @@ def search(request):
         # This feels hacky and is probably a SQL injection vulnerability, but
         # it is elegant.
         return eval("Experiment.objects.filter(%s='%s')" % (key, value))
-        return eval(s)
 
     for key, value in form.cleaned_data.iteritems():
         if value:
