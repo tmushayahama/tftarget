@@ -4,9 +4,16 @@ Transcription Factor Target Search
 
 This site will allow users to search for gene transcription factors and find potential target genes.
 
-
 Quickstart
 ----------
+
+The server and all of it's dependencies are installed on our AWS instance, so simply visit it's IP address in your browser.
+For login details and the IP address, check your email.
+Once you're logged in, cd into /srv/tftarget and you can begin development.
+
+
+Running the Server Locally
+----------------------------------------
 
 If you have the dependencies installed, simply run ``python manage.py runserver``, then visit ``127.0.0.1:8000`` in a browser.
 
@@ -23,15 +30,11 @@ See the `documentation for virtualenvwrapper`_ if you think you'll do any other 
 
 Now install the rest of the dependencies by running ``pip install -r requirements.txt``.
 
-At this point you're arguably ready to go.
-See the next section for instructions on installing and configuring MySQL, or just comment out the ``DATABASES`` variable in ``settings.py``.
-Since this is a database-driven application, the search function will naturally not work if you just comment out the ``DATABASES`` variable, but you will at least have the rest of the server working.
-
 
 MySQL
 -----
 
-The quickstart above is sufficient for starting the site, but eventually you'll need to install MySQL and setup Django to use it.
+The quickstart above is sufficient for  getting a server that can run, but eventually you'll need to install MySQL and setup Django to use it.
 MySQL can be downloaded from `their website`_ and installed by following the directions.
 During install, you should be asked to create a password for the ``root`` user.
 Do this, and don't forget the password, you will need it soon and may need it later in an emergency.
@@ -54,35 +57,37 @@ MySQL should tell you that each query was ok.
 Exit the MySQL prompt and now create a file in this directory called ``local_settings.py``.
 Put the following lines into the file and save it::
 
-    from settings import *
+    import settings
 
-    DATABASES['default']['PASSWORD'] = '$PASSWORD'
+    settings.DATABASES['default']['PASSWORD'] = '$PASSWORD'
+
+Ensure that Django has access to the MySQL database by opening a Python interpreter with ``python manage.py shell`` and then running these commands::
+
+    from search.models import Experiment
+    exp = Experiment(gene='3 feet tall', pmid=42, transcription_family='teddy bear', species='ewok', expt_name='giant ewok experiment', replicates='one million', control='human', quality='God-given')
+    exp.save()
+    exp.delete()
+
 
 Using South
 '''''''''''
 
-You will likely end up needing to learn how to use Django South as well.
 Databases complain whenever a table schema is changed, and anytime you make a change to a class in a models.py file it represents a change to a table schema.
 South makes migrating table schemas easy, without losing your data.
 Information on South can be found on `their tutorial`_, and you should already have it installed if the ``pip install -r requirements.txt`` worked.
-This step isn't strictly necessary if you won't be doing much development on anything affecting the database or if you know how to use mysql reasonably well, but if you'd like to use South, the first thing you'll need to do is open the ``settings.py`` file and comment out lines in INSTALLED_APPS that list apps that we built.
+The first thing you'll need to do is open the ``settings.py`` file and comment out lines in INSTALLED_APPS that list apps that we built.
 Currently, the only app that we've built is called 'search', so just comment out the line that says ``'search',``.
 Now run a ``python manage.py syncdb``, and create a Django admin user by following the prompts.
 Finally, uncomment the line(s) you just commented out and run this command for each app that we built, replacing $APP_NAME with the name of the app::
 
     python manage.py migrate $APP_NAME
 
-Conclusion
-''''''''''
-
-If you didn't setup up South, you can now run ``python manage.py syncdb``.
-This will create necessary tables in MySQL and a Django admin user.
 In order to load the latest SQL dump, run ``mysql -uroot -p tftarget < insert.sql`` and give the root user's password at the prompt.
 
 What to do if the ID's are Wrong
 ''''''''''''''''''''''''''''''''
 
-If you run into errors that rows are attempting to foreign key to other rows that don't exist when you're trying to import the data, I've figured out what to do.
+If you run into errors that rows are attempting to foreign key to other rows that don't exist when you're trying to import the data, read on.
 First, delete all the data in each table that currently contains data using the SQL command ``DELETE FROM $TABLE_NAME``.
 Then, run ``ALTER TABLE $TABLE_NAME AUTO_INCREMENT=n`` to set the AUTO_INCREMENT value back down to one (or any other value).
 You should now be able to retry the ``mysql -uroot -p tftarget < insert.sql`` command and hopefully it will work.
