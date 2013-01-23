@@ -1,4 +1,10 @@
+{% extends "base.html" %}
 {% load i18n uni_form_tags %}
+
+{% block body %}
+<link href="{{ STATIC_URL }}uni_form/uni-form.css" media="screen" type="text/css" rel="stylesheet" />
+<link href="{{ STATIC_URL }}uni_form/blue.uni-form.css" media="screen" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="{{ STATIC_URL }}js/search.js"></script>
 
 Search
 <br>
@@ -10,3 +16,4 @@ Search
         <input type="submit" class="button" value="{% trans "Submit" %}" />
     </div>
 </form>
+{% endblock %}
