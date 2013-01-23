@@ -55,11 +55,12 @@ To do this, run ``mysql -uroot -p`` and enter the root password that you picked 
 
 MySQL should tell you that each query was ok.
 Exit the MySQL prompt and now create a file in this directory called ``local_settings.py``.
-Put the following lines into the file and save it::
+Put the following lines into the file and save it, making up a secret key to use for hashing::
 
     import settings
 
     settings.DATABASES['default']['PASSWORD'] = '$PASSWORD'
+    settings.SECRET_KEY = "$SECRET_KEY"
 
 Ensure that Django has access to the MySQL database by opening a Python interpreter with ``python manage.py shell`` and then running these commands::
 
