@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -12,7 +14,6 @@ def search(request):
     if not form.is_valid():
         return render_to_response("search.html", {"form" : form},
                                   context_instance=RequestContext(request))
-    print form.cleaned_data
     results = set()
     if form.cleaned_data['tissue_name']:
         tissue_name = form.cleaned_data.pop('tissue_name')
@@ -43,7 +44,7 @@ def search(request):
                 results = results.intersection(set(these_results))
             else:
                 results = results.union(set(these_results))
-    return HttpResponse("It searched!<br><br>Found:<br><br>%s" % list(results))
+    return HttpResponse("%s" % list(results))
 
 
 def search_all(request):
