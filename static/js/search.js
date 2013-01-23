@@ -14,6 +14,7 @@ $(document).ready(function () {
 
     $('#search_button').click(function () {
         $.post('/', $('#search_form').serialize(), function (data) {
+            $('#search_results').children().remove()
             var i;
             for (i=0; i < data.length; i++) {
                 $('#search_results').append("<p>" + printObject(data[i]));
