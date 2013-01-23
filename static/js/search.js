@@ -1,9 +1,9 @@
 function printObject (object) {
-    output = ''
+    output = '{'
     for (property in object) {
-        output += property + ': ' + object[property] + '; ';
+        output += '"' + property + '": "' + object[property] + '", ';
     }
-    return output
+    return output + '}'
 }
 
 
