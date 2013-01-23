@@ -13,7 +13,7 @@ $(document).ready(function () {
     $.ajaxSetup({traditional: true});
 
     $('#search_button').click(function () {
-        $.post('/search/', $('#search_form').serialize(), function (data) {
+        $.post('/', $('#search_form').serialize(), function (data) {
             var i;
             for (i=0; i < data.length; i++) {
                 $('#search_results').append("<p>" + printObject(data[i]));

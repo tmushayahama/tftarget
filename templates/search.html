@@ -9,7 +9,7 @@
 Search
 <br>
 <br>
-<form id="search_form" action="{% url search.views.search %}" method="post" class="uniForm">
+<form id="search_form" class="uniForm">
     {% csrf_token %}
     {{ form|as_uni_form }}
     <div class="buttonHolder">

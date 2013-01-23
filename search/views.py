@@ -44,12 +44,4 @@ def search(request):
                 results = results.intersection(set(these_results))
             else:
                 results = results.union(set(these_results))
-    return HttpResponse("%s" % list(results))
-
-
-def search_all(request):
-    """Return all experiments."""
-    results = Experiment.objects.all()
-    if results:
-        return HttpResponse("Searched!<br><br>Found:<br><br>%s" % results)
-    return HttpResponse("Searched!<br><br>No results found.")
+    return HttpResponse(str(list(results)))
