@@ -27,7 +27,7 @@ function ajaxSearch () {
 	//clear the search result for ready for next search result
         $('#search_results').children().remove()
 	//create a table here
-	var table=$('<table></table>').addClass('table');
+	var table=$('<table></table>').addClass('table table-condensed table-striped table-hover');
         for (var i = 0; i < data.length; i++) {
             printTable(table, data[i], i);
         }
