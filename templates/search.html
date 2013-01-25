@@ -18,12 +18,10 @@
   <br>
   <form id="search_form" class="form-horizontal">
     {% csrf_token %}
-    {{ form|as_uni_form }}
-    <div class="buttonHolder">
-      <input id="search_button" type="button" class="button" value="{% trans "Search!" %}" />
-    </div>
+    {{ form }}
   </form>
-  
+  <a id="search_button" class="btn btn-primary btn-medium">Search!</a>
+
   <div id="search_results">
   </div>
 </div>
