@@ -16,6 +16,15 @@ class Command(BaseCommand):
         #(jfriedly) I considered putting this in a try: except IOError, but I
         # think it's better to just let that bubble up.
         with open(args[0], 'r') as csvfile:
-            reader = csv.reader(csvfile, delimiter='	')
+            reader = csv.reader(csvfile, delimiter='\t')
             for row in reader:
-                print ', '.join(row)
+                # If a row contains column headers, just skip over it. This
+                # check is a bit naive, since it only checks the first column.
+                if row[0].lower().strip() == 'gene':
+                    continue
+                
+                e = Experiment(gene=row[0], pmid=row[2],
+                    transcription_family=row[1], species=row[3],
+                    expt_name=row[4], replicates=row[5], control=row[6],
+                    quality=row[7])
+                e.save()
