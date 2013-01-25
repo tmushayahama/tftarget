@@ -9,13 +9,14 @@ function printTable (table, object, row_num) {
  //initialize the row
     var row = '<tr>';
     if(row_num == 0) { // table heading
-	for (property in object) {
-	    row += '<td>' + property + '</td>';
-	}
-    } else { // table data
-	for (property in object) {
-	    row += '<td>' + object[property] + '</td>';
-	}
+        for (property in object) {
+            row += '<td>' + property + '</td>';
+        }
+        table.append(row);
+        var row = '<tr>';
+    }
+    for (property in object) {
+        row += '<td>' + object[property] + '</td>';
     }
     row += '</tr>'; //end the row, ready to append
     table.append(row);
@@ -24,14 +25,15 @@ function printTable (table, object, row_num) {
 
 function ajaxSearch () {
     $.post('/', $('#search_form').serialize(), function (data) {
-	//clear the search result for ready for next search result
+    //clear the search result for ready for next search result
         $('#search_results').children().remove()
-	//create a table here
-	var table=$('<table></table>').addClass('table');
+    //create a table here
+    var table=$('<table></table>').addClass('table');
         for (var i = 0; i < data.length; i++) {
+            console.log(data[i]);
             printTable(table, data[i], i);
         }
-	   $('#search_results').append(table);
+       $('#search_results').append(table);
     }, 'json');
 }
 
