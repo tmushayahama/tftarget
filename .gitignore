@@ -4,3 +4,4 @@ local_urls.py
 *.swn
 *.swo
 *.swp
+*~
