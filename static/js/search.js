@@ -16,7 +16,11 @@ function printTable (table, object, row_num) {
         var row = '<tr>';
     }
     for (property in object) {
-        row += '<td>' + object[property] + '</td>';
+        if (property == 'pmid') {
+            row += '<td><a href="http://www.ncbi.nlm.nih.gov/pubmed/' + object[property] + '">' + object[property] + '</a></td>';
+        } else {
+            row += '<td>' + object[property] + '</td>';
+        }
     }
     row += '</tr>'; //end the row, ready to append
     table.append(row);
@@ -26,9 +30,9 @@ function printTable (table, object, row_num) {
 function ajaxSearch () {
     $.post('/', $('#search_form').serialize(), function (data) {
     //clear the search result for ready for next search result
-        $('#search_results').children().remove()
+    $('#search_results').children().remove()
     //create a table here
-    var table=$('<table></table>').addClass('table table-condensed table-striped table-hover');
+    var table = $('<table></table>').addClass('table table-condensed table-striped table-hover');
         for (var i = 0; i < data.length; i++) {
             printTable(table, data[i], i);
         }
@@ -42,8 +46,9 @@ $(document).ready(function () {
     $.ajaxSetup({traditional: true});
 
     $('#search_button').click(ajaxSearch);
-    $('.ctrlHolder').keypress(function (e) {
+    $('input').keypress(function (e) {
         if (e.which == 13) {
+            console.log('enter pressed');
             ajaxSearch();
         }
     });
