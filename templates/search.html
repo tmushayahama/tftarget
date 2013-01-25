@@ -19,9 +19,20 @@ Later on we have to decide if we want it fixed or not so far it is fixed.
       <a class="brand" href="#">Ohio State University</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li class="active"><a href="#">TFTarget</a></li>
+	  <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">How To  <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Build your search</a></li>
+              <li><a href="#">Connect to PubMed </a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Import Data</li>
+              <li><a href="#">to csv file format</a></li>
+              <li><a href="#">to xls file format</a></li>
+            </ul>
+          </li>
+          <li class="tftarget-pull-right"><a href="#about">About</a></li>
+          <li class="tftarget-pull-right"><a href="#contact">Contact</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
@@ -30,14 +41,15 @@ Later on we have to decide if we want it fixed or not so far it is fixed.
 
 <div class="container">
    <div class="hero-unit">
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+        <h1>Transcription Factor Target</h1>
+        <p>A large database compiled by The Ohio State University Molecular Biologists to find potential transcription factor targets. Build your search criteria below and hit search. </p>
+        <p><a class="btn btn-primary btn-medium">Learn more &raquo;</a></p>
       </div>
-Search
+
+<h2>Create your search below</h2>
 <br>
 <br>
-<form id="search_form" class="uniForm">
+<form id="search_form" class="form-horizontal">
     {% csrf_token %}
     {{ form|as_uni_form }}
     <div class="buttonHolder">
