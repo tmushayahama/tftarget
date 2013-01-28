@@ -1,6 +1,25 @@
 OSU Wexner Medical Center
-Contacts: Andrew Yates, Dr. Thierry Pecot, Dr. Kun Huang, Dr. Raghu Machiraju
-Email: Kun.huang@osumc.edu, Thierry.Pecot2@osumc.edu, machiraju.1@osu.edu
+=========================
+
+Contacts
+---------
+
+* Andrew Yates
+
+* Dr. Thierry Pecot
+
+* Dr. Kun Huang
+
+* Dr. Raghu Machiraju
+
+Email
+-----
+
+* Kun.huang@osumc.edu
+
+* Thierry.Pecot2@osumc.edu
+
+* machiraju.1@osu.edu
 
 You know that every cell in your body contains a complete copy of your entire
 genome, so how do different cells express the same DNA differently to do different
