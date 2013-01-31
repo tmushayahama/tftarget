@@ -28,18 +28,9 @@ def search(request):
         else:
             results = results.union(set(t.expt_id for t in factors))
 
-    def get_experiments(key, value):
-        """Since the form returns key:value pairs that we can filter on
-        directly, do that.  But since keyword argument names can't be passed
-        as strings, eval them.
-        """
-        # This feels hacky and is probably a SQL injection vulnerability, but
-        # it is elegant.
-        return eval("Experiment.objects.filter(%s='%s')" % (key, value))
-
     for key, value in form.cleaned_data.iteritems():
         if value:
-            these_results = get_experiments(key, value)
+            these_results = Experiment.objects.filter(**{key: value})
             if results:
                 results = results.intersection(set(these_results))
             else:
