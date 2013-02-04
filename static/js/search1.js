@@ -6,6 +6,7 @@ object - the json object
 row_num - to distinguish between a heading and data ....will think of a better way. If row_num == 0, it meas it is a heading otherwise data.
 */
 function BeuatifyInputForm () {
+    $('label').addClass('control-label');
     $('.input').wrap('<div class="controls"/>');
     console.log('Beuatifying your search Form');
 }
@@ -33,10 +34,10 @@ function printTable (table, object, row_num) {
 
 function ajaxSearch () {
     $.post('/', $('#search_form').serialize(), function (data) {
-        //clear the search result for ready for next search result
-        $('#search_results').children().remove()
-        //create a table here
-        var table = $('<table></table>').addClass('table table-condensed table-striped table-hover');
+    //clear the search result for ready for next search result
+    $('#search_results').children().remove()
+    //create a table here
+    var table = $('<table></table>').addClass('table table-condensed table-striped table-hover');
         for (var i = 0; i < data.length; i++) {
             printTable(table, data[i], i);
         }
