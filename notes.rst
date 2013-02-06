@@ -1,10 +1,3 @@
-Notes
-=====
-
-
-Search Algorithm
-----------------
-
 In general, there are two kinds of experiments that associate a transcription factor with a gene target.
 These are listed below.
 In order to return results for a transcription factor search, we need to meet a few minimum qualifications:
@@ -15,7 +8,7 @@ In order to return results for a transcription factor search, we need to meet a 
 
 
 Binding Experiments
-'''''''''''''''''''
+-------------------
 
 * ChIP
 
@@ -29,8 +22,9 @@ Binding Experiments
 
 * EMSA
 
+
 Gene Expression Experiments
-'''''''''''''''''''''''''''
+---------------------------
 
 * Reporter gene assay
 
@@ -53,75 +47,46 @@ Gene Expression Experiments
 * Nuclear run-off
 
 
-Transcription Factor Families
------------------------------
+Transcription Family/Factor
+---------------------------
 
-Currently, we have data that only shows two transcription factor families, E2F and Myc.
-This semester, we'll be getting three new transcription families, NFkB, FOX, and STAT.
-Within each of these, there are a number of transcription factors that we're looking at, which are shown below.
-Note that capitalization varies between the data and the values here.
+Thierry would like to have a smart user interface for selecting transcription factors.
+His ideal interface would have one dropdown that has major and minor headings as values, and will automatically select all of the minor headings when a user clicks on a major heading.
+We can implement this by sending a multiselect dropdown with values: ['E2F', '&nbsp;&nbsp;E2F1', '&nbsp;&nbsp;E2F2', ... 'FOX', '&nbsp;&nbsp;FOXA', ... ].
+The with JavaScript, automatically select/unselect all the ones starting with spaces whenever a heading is clicked.
+Send all the values to the server, and ignore the headings::
 
-E2F
-'''
+    E2F
+        E2F1
+        E2F2
+        .
+        .
+        .
+    Myc
+        c-Myc
+        n-Myc
+    .
+    .
+    .
 
-    * E2F1
 
-    * E2F2
+Search Results
+--------------
 
-    * E2F3a
+We need to display these fields in this order:
 
-    * E2F3b
+* Transcription Factor
 
-    * E2F4
+* Human Gene
 
-    * E2F5
+* Mouse Gene
 
-    * E2F6
+* PubMed ID
 
-    * E2F7
+* Species
 
-    * E2F8
+* Tissue
 
-Myc
-'''
+* Cell Line
 
-    * c-Myc
-
-    * n-Myc
-
-NFkB
-''''
-
-    * NFkB1
-
-    * NFkB2
-
-    * RELA
-
-    * RELB
-
-FOX
-'''
-
-    * FOXA
-
-    * FOXM
-
-    * FOXO
-
-STAT
-''''
-
-    * STA1
-
-    * STAT2
-
-    * STA3
-
-    * STAT4
-
-    * STA5a
-
-    * STAT5b
-
-    * STAT6
+* Experiment Type
