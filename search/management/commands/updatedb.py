@@ -168,7 +168,7 @@ class Command(BaseCommand):
         # the letter for the family member.  We fix that here.
         if (experiment.transcription_family == Experiment.MYC and
             Experiment.MYC.lower() not in tf.lower()):
-            tf = re.sub('(.*)', r'Myc-\1', tf, flags=re.I)
+            tf = re.sub('(.*)', r'\1-Myc', tf, flags=re.I)
         # The data they give us may have STAT transcription factors as just
         # the digit for the family member.  We fix that here.
         if (experiment.transcription_family == Experiment.STAT and

@@ -5,6 +5,8 @@ from django.shortcuts import render_to_response
 from search.models import Experiment
 from search.forms import SearchForm
 
+import json
+
 
 def search(request):
     """Search through the experiments for a search term."""
@@ -16,6 +18,18 @@ def search(request):
     if form.cleaned_data['expt_type']:
         expt_type = form.cleaned_data.pop('expt_type')
         experiments = Experiment.objects.filter(expt_type__type_name=expt_type)
+        results = _intersect_unless_empty(results, experiments)
+
+    if form.cleaned_data['transcription_factor']:
+        try:
+            tf = json.loads('"%s"' % form.cleaned_data['transcription_factor'])
+            experiments = Experiment.objects.filter(transcription_factor__tf=tf)
+            form.cleaned_data.pop('transcription_factor')
+        except ValueError:
+            tfs = json.loads(form.cleaned_data.pop('transcription_factor'))
+            experiments = set()
+            for tf in tfs:
+                experiments = experiments.union(set(Experiment.objects.filter(transcription_factor__tf=tf)))
         results = _intersect_unless_empty(results, experiments)
 
     if form.cleaned_data['tissue_name']:
