@@ -1,25 +1,36 @@
 {% extends "base.html" %}
 {% block body %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/search.js"></script>
-
-<div class="container">
+<link href="{{ STATIC_URL }}css/search.css" type="text/css" rel="stylesheet"/>
+<div class="container span12">
   <br>
-  <div class="hero-unit tftarget-welcome-banner">
-    <h1>Transcription Factor Target</h1>
-    <p>A large database compiled by The Ohio State University Molecular Biologists to find potential transcription factor targets. Type in your search criteria below and hit search. </p>
-    <p><a class="btn btn-primary btn-medium">Learn more &raquo;</a></p>
+  <div class="row span12 tft-welcome-banner">
+    <div class="row span12">
+     <div class="span2">
+       <h4>Transcription Factor Target</h4>
+     </div>
+     <div class="span9">
+       <p></p>
+     </div>
+    </div> <!-- row -->
   </div>
-
-  <h2>Create your search below</h2>
   <br>
-  <br>
-  <form id="search_form" class="form-horizontal">
-    {% csrf_token %}
-    {{ form }}
-  </form>
-  <a id="search_button" class="btn btn-primary btn-medium">Search!</a>
-
-  <div id="search_results">
+  <div class="row span12">
+     <form class="form-search tft-search-container">
+       <p class="offset1"> QUICK KEYWORD(S) SEARCH SEPERATE BY COMMA </p> 
+       <input type="text" placeholder="For example E2F, Western Blot, Mouse" id="#tft-search-query" class="input-xxlarge search-query">
+       <button type="submit" id="#tft-submit-btn-1" class="btn">Search</button>
+       <h4><a href="#" id="tft-advanced-search">Advanced Search</a></h4>
+     </form>
+  </div>
+  <div id="tft-dialog-form" class="row">
+    <form id="search_form" class="form-horizontal">
+      {% csrf_token %}
+      {{ form }}
+    </form>
+    <a id="search_button" class="btn btn-primary btn-medium">Search!</a>
+  </div>
+  <div id="search_results" class="row span12">
   </div>
 </div>
 

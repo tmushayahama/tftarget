@@ -82,15 +82,10 @@ $(document).ready(function () {
 });
 
 function initDialog() {
-    $('#tft-dialog-form').dialog({
-        autoOpen: false,
-        height: 300,
-        width: 500,
-        modal:true,
-        zIndex:10
-    });
-    $('#tft-advanced-search')
-        .click(function() {
-            $('#tft-dialog-form').dialog('open');
-        });
+$('#search_form').dialog({
+    autoOpen: false,
+    height: 300,
+    width: 300,
+    modal:true
+});
 }
