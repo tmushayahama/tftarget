@@ -17,6 +17,13 @@ var TABLE_HEADING = [["transcription_factor", "Transcription Factor"],
                      ["experimental_tissues", "Experimental Tissues"],
                      ["cell_line", "Cell Line"],
                      ["expt_type", "Experimental Type"]];
+
+var INPUT_NAME = [["id_transcription_family", "Transcription Family"],
+                  ["id_transcription_factor", "Transcription Factor"],
+                  ["id_gene", "Gene"],
+                  ["id_species", "Experimental Species"],
+                  ["id_tissue_name", "Experimental Tissues"],
+                  ["id_expt_type", "Experimental Type"]];
 /**
    Prints the headings of the table from a json object. The result is appended to the table
    @param thead - the thead element of the table
@@ -66,6 +73,22 @@ function initSearchForm () {
     //
     console.log('Beuatifying your search Form');
 }
+function searchPreview() {
+    //refresh the description
+    var $preview = $('#tft-search-preview');
+    $preview.children().remove();
+    var $dl = $('<dl></dl>');
+    $dl.addClass('dl-horizontal');
+    for (var i=0; i < INPUT_NAME.length; i++) {
+        var inputVal = $('#'+INPUT_NAME[i][0]).val();
+       // console.log(inputVal);
+        if($.trim(inputVal)!='') {
+            $dl.append('<dt>'+INPUT_NAME[i][1]+': </dt>');
+            $dl.append('<dd>'+inputVal+'</dd>');
+        }
+    }
+    $preview.append($dl);
+}
 function ajaxSearch () {
     $.post('/', $('#tft-search-form').serialize(), function (data) {
         //clear the search result for ready for next search result
@@ -103,6 +126,7 @@ $(document).ready(function () {
 function addEventHandlers() {
     $('#tft-search-btn-2').click(function (){
         $('#tft-dialog-form').modal('hide');
+        searchPreview();
     });
    // $('#tft-dialog-form').modal();
     /*$('#tft-dialog-form').dialog({
