@@ -78,6 +78,7 @@ function searchPreview() {
     var $preview = $('#tft-search-preview');
     $preview.children().remove();
     var $dl = $('<dl></dl>');
+    $dl.append('<h4>Preview</h4>');
     $dl.addClass('dl-horizontal');
     for (var i=0; i < INPUT_NAME.length; i++) {
         var inputVal = $('#'+INPUT_NAME[i][0]).val();
