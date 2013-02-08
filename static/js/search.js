@@ -53,7 +53,7 @@ function printTBody (tbody, object) {
 /*initSearchForm require that values are in pairs label and a bunch of ctrols.
 */
 function initSearchForm () {
-    var $searchForm = $('#search-form').children();
+    var $searchForm = $('#tft-search-form').children();
     /*add the class control-label to all labels in the 
       input form
     */
@@ -67,7 +67,7 @@ function initSearchForm () {
     console.log('Beuatifying your search Form');
 }
 function ajaxSearch () {
-    $.post('/', $('#search-form').serialize(), function (data) {
+    $.post('/', $('#tft-search-form').serialize(), function (data) {
         //clear the search result for ready for next search result
         $('#search-results').children().remove()
         //create a table here
@@ -89,7 +89,7 @@ function ajaxSearch () {
 $(document).ready(function () {
     console.log("Loading jQuery, jQuery UI, and our own custom js!!!");
     $.ajaxSetup({traditional: true});
-    $('#search-button').click(ajaxSearch);
+    $('#tft-search-btn-2').click(ajaxSearch);
     $('.input-text').keypress(function (e) {
         if (e.which == 13) {
             console.log('enter pressed');
@@ -98,11 +98,14 @@ $(document).ready(function () {
     });
     $('.input-select').change(ajaxSearch);
     initSearchForm ();
-    initDialog();
+    addEventHandlers();
 });
-
-function initDialog() {
-    $('#tft-dialog-form').dialog({
+function addEventHandlers() {
+    $('#tft-search-btn-2').click(function (){
+        $('#tft-dialog-form').modal('hide');
+    });
+   // $('#tft-dialog-form').modal();
+    /*$('#tft-dialog-form').dialog({
         autoOpen: false,
         height: 600,
         width: 600,
@@ -115,7 +118,7 @@ function initDialog() {
     $('#tft-advanced-search')
         .click(function() {
             $('#tft-dialog-form').dialog('open');
-        });
+        });*/
 }
  $(function() {
 
