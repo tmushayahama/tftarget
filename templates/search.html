@@ -17,20 +17,20 @@
   <br>
   <div class="row span12">
      <form class="form-search tft-search-container">
-       <p class="offset1"> QUICK KEYWORD(S) SEARCH SEPERATE BY COMMA </p> 
-       <input type="text" placeholder="For example E2F, Western Blot, Mouse" id="#tft-search-query" class="input-xxlarge search-query">
+       <p class="offset2"> QUICK KEYWORD(S) SEARCH SEPERATE BY COMMA </p> 
+       <input type="text" placeholder="Example E2F, MYC, Western Blot, Mouse" id="#tft-search-query" class="offset1 input-xxlarge search-query">
        <button type="submit" id="#tft-submit-btn-1" class="btn">Search</button>
        <h4><a href="#" id="tft-advanced-search">Advanced Search</a></h4>
      </form>
   </div>
   <div id="tft-dialog-form" class="row">
-    <form id="search_form" class="form-horizontal">
+    <form id="search-form" class="form-horizontal">
       {% csrf_token %}
       {{ form }}
     </form>
     <a id="search_button" class="btn btn-primary btn-medium">Search!</a>
   </div>
-  <div id="search_results" class="row span12">
+  <div id="search-results" class="row span12">
   </div>
 </div>
 
