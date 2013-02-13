@@ -1,8 +1,4 @@
-.tft-welcome-banner {
-    height: 60px;
-    background-color:lightgrey;
-}
-.tft-search-container {
-    padding:10px;
-    background-color:silver;
+.hero-unit {
+    height:140px;
+    background-color:green;
 }
