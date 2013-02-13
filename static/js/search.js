@@ -13,10 +13,10 @@
 var TABLE_HEADING = [["transcription_factor", "Transcription Factor"],
                      ["gene", "Gene"],
                      ["pmid", "PMID"],
-                     ["species", "Experimental Species"],
-                     ["experimental_tissues", "Experimental Tissues"],
-                     ["cell_line", "Cell Line"],
-                     ["expt_type", "Experimental Type"]];
+                     ["species", "Species"],
+                     ["experimental_tissues", "Organ"],
+                     ["cell_line", "Tissues/Cell Line"],
+                     ["expt_type", "Experiment"]];
 
 var INPUT_NAME = [["id_transcription_family", "Transcription Family"],
                   ["id_transcription_factor", "Transcription Factor"],
@@ -31,7 +31,6 @@ var INPUT_NAME = [["id_transcription_family", "Transcription Family"],
 */
 function printTHead (thead) {
     var row = '<tr>';
-    //for (property in object) {
     for(var i=0; i < TABLE_HEADING.length; i++) {
        row += '<th>' + TABLE_HEADING[i][1] + '</th>';
     }
@@ -57,21 +56,67 @@ function printTBody (tbody, object) {
     tbody.append(row);
 }
 
-/*initSearchForm require that values are in pairs label and a bunch of ctrols.
-*/
+function fillFamily(trans) {
+    var $familyContainer = $('#family-container');
+    var $familyAccordion = $('<div></div>').addClass('accordion');
+    $familyAccordion.attr('id', 'family-accordion');
+    for (var i =0; i<trans.length; i++) {
+        var $familyGroup = $('<div />').addClass('accordion-group');
+        var $familyHeading = $('<div />').addClass('accordion-heading');
+        var $familyName = $('<a><label class="checkbox"><input id="'+trans[i][0]+'"type="checkbox" class="family-select">'
+                            +trans[i][0]
+                            +'</label></a>').addClass('accordion-toggle');
+        // var $familyName = $('<a>'+trans[i][0]+'</a>');
+        var $collapse = $('<div />').addClass('accordion-body collapse-in ');
+        var $inner = $('<div />').addClass('accordion-body collapse-in ');
+        
+        // $family.attr('id', trans[i][0]);
+        $familyName.attr('data-toggle', 'collapse');
+        $familyName.attr('data-parent', '#family-accordion');
+        $familyName.attr('href', '#collapse-'+trans[i][0]);
+        $collapse.attr('id', 'collapse'+trans[i][0]);
+        
+        //appending
+        $familyHeading.append($familyName);
+        $collapse.append($inner);
+        $familyGroup.append($familyHeading);
+        $familyGroup.append($collapse);
+        for (var j= 1; j< trans[i].length; j++) {
+            $familyMember = $('<li><label class="checkbox"><input type="checkbox" my-parent="'+trans[i][0]+'" class="family-member '+trans[i][0]+'" value="'+trans[i][j]+'">'
+                              +trans[i][j]
+                              +'</label></li>');
+            //$familyMember.addClass('accordion-toggle');
+            //$familyName.attr('data-toggle', 'collapse');
+            $inner.append($familyMember);
+        }
+        $familyAccordion.append($familyGroup);
+    }
+    $familyContainer.append($familyAccordion);
+    $('.dropdown-menu input').click(function (e) {
+        e.stopPropagation();
+        //$(".collapse").collapse();
+        //$('.dropdown-menu').toggle();
+    });
+}
+
+//initSearchForm require that values are in pairs label and a bunch of ctrols.
 function initSearchForm () {
-    var $searchForm = $('#tft-search-form').children();
+    // $('.tft-hidden').css('display', 'none');
+    var $searchForm = $('#tft-search-form').children(':not(:hidden)');
     /*add the class control-label to all labels in the 
       input form
     */
-    $('label').addClass('control-label');
-    $('.input').wrap('<div class="controls"/>');//every input has a paret of div controls
-    for(var i=1, j=$searchForm.length; i<j; i+=2) {
-       $searchForm.slice(i, i+2).wrapAll('<div class="control-group"/div>')
+    
+    $('#tft-search-form > label').addClass('control-label ');
+    //alert($searchForm.length);
+    //$searchForm.prepend($('#tft-transcription-factor-input'));
+    //$('.tft-hidden').replaceWith($('#tft-transcription-factor-input'));
+    for(var i=0, j=$searchForm.length; i<j; i+=2) {
+        //alert($searchForm[i]);
+        $searchForm.slice(i, i+2).wrapAll('<div class="control-group span5"/>')
     }
-    //$searchForm.children(0).remove();
-    //
-    console.log('Beuatifying your search Form');
+    $(':input:not(:hidden)').wrap('<div class="controls " />');//wraps every input which is not hidden
+    console.log('Beuatifying your search Form!');
 }
 function searchPreview() {
     //refresh the description
@@ -82,7 +127,7 @@ function searchPreview() {
     $dl.addClass('dl-horizontal');
     for (var i=0; i < INPUT_NAME.length; i++) {
         var inputVal = $('#'+INPUT_NAME[i][0]).val();
-       // console.log(inputVal);
+        // console.log(inputVal);
         if($.trim(inputVal)!='') {
             $dl.append('<dt>'+INPUT_NAME[i][1]+': </dt>');
             $dl.append('<dd>'+inputVal+'</dd>');
@@ -92,6 +137,7 @@ function searchPreview() {
 }
 function ajaxSearch () {
     $.post('/', $('#tft-search-form').serialize(), function (data) {
+        
         //clear the search result for ready for next search result
         $('#search-results').children().remove()
         //create a table here
@@ -113,7 +159,13 @@ function ajaxSearch () {
 $(document).ready(function () {
     console.log("Loading jQuery, jQuery UI, and our own custom js!!!");
     $.ajaxSetup({traditional: true});
-    $('#tft-search-btn-2').click(ajaxSearch);
+    $('#tft-search-btn-1').click(ajaxSearch);
+    //an ecample of the transcription family
+    var trans = [['E2F', 'E2F1', 'E2F2', 'E2F3', 'E2F3A', 'E2F4', 'E2F5', 'E2F6', 'E2F7'], 
+                 ['MYC','c-Myc','n-Myc']];
+    
+    
+    fillFamily(trans);
     $('.input-text').keypress(function (e) {
         if (e.which == 13) {
             console.log('enter pressed');
@@ -124,69 +176,104 @@ $(document).ready(function () {
     initSearchForm ();
     addEventHandlers();
 });
+function populateTranscriptionInput() {
+    var factors = '[';
+    $('.family-member:checked').each(function() {
+        factors += '"'+$(this).attr('value') + '",'
+    });
+    if (factors.length>1) {
+        return factors.slice(0, -1)+']';
+    } else {
+        return ''; // so that it does not return [
+    }
+   // console.log(factors);
+}
+//I will comment later
 function addEventHandlers() {
     $('#tft-search-btn-2').click(function (){
         $('#tft-dialog-form').modal('hide');
         searchPreview();
     });
-   // $('#tft-dialog-form').modal();
-    /*$('#tft-dialog-form').dialog({
-        autoOpen: false,
-        height: 600,
-        width: 600,
-        resizable:false,
-        draggable:false,
-        position: "center",
-        modal:true,
-        zIndex:10
+    $('.tft-close').click(function() {
+        $('#id_transcription_factor').val(populateTranscriptionInput());
+        alert($('#id_transcription_factor').val());
+        $('#tft-search-btn-1').click();
     });
-    $('#tft-advanced-search')
-        .click(function() {
-            $('#tft-dialog-form').dialog('open');
-        });*/
-}
- $(function() {
-
-     var tf = [
-         "E2F",
-         "MYC",
-         "STAT"
-     ];
-     function split( val ) {
-         return val.split( /,\s*/ );
-     }
-     function extractLast( term ) {
-         return split( term ).pop();
-     }
-     $( "#tft-search-query" )
-     // don't navigate away from the field on tab when selecting an item
-         .bind( "keydown", function( event ) {
-             if ( event.keyCode === $.ui.keyCode.TAB &&
-                  $( this ).data( "autocomplete" ).menu.active ) {
-                 event.preventDefault();
-             }
-         })
-         .autocomplete({
-             minLength: 0,
-             source: function( request, response ) {
-                 // delegate back to autocomplete, but extract the last term
-                 response( $.ui.autocomplete.filter(
-                     tf, extractLast( request.term ) ) );
-             },
-             focus: function() {
-                 // prevent value inserted on focus
-                 return false;
-             },
-             select: function( event, ui ) {
-                 var terms = split( this.value );
-                 // remove the current input
-                 terms.pop();
-                 // add the selected item
-                 terms.push( ui.item.value );
-                 // add placeholder to get the comma-and-space at the end
-                 terms.push( "" );
-                 this.value = terms.join( ", " );
-                 return false;
+    $('.family-select').click(function() {
+        console.log('im clicked family');
+        //console.log( $(this).is(':checked'));
+        if($(this).is(':checked')==true){
+            console.log( $(this).attr('id'));
+            $('.'+$(this).attr('id')).each(function(){ 
+                this.checked = true;
+            });
+        } else {
+            $('.'+$(this).attr('id')).each(function(){ 
+                this.checked = false;
+            });
+        }
+    });
+    $('.family-member').click(function() {
+        console.log('im a clicked member');
+        // console.log( $(this).attr('my-parent'));
+        console.log( $('.'+$(this).attr('my-parent')).length);
+        //var checkedBoxes = 0;
+         $('.'+$(this).attr('my-parent')).each(function(){ 
+             if($(this).is(':checked')==false) {
+                 //$('#MYC').attr("checked", "true");
+                 $('#'+$(this).attr('my-parent')).attr("checked", "false");
+                 console.log($('#'+$(this).attr('my-parent')).is(':checked'));
              }
          });
- });
+    });
+    //  $('.dropdown-toggle').dropdown();
+    //$(".collapse").collapse();*/
+}
+$(function() {
+    
+    var tf = [
+        "E2F",
+        "MYC",
+        "STAT",
+        'Human',
+        'Mouse',
+        'Chip'
+    ];
+    function split( val ) {
+        return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+        return split( term ).pop();
+    }
+    $( "#tft-search-query" )
+    // don't navigate away from the field on tab when selecting an item
+        .bind( "keydown", function( event ) {
+            if ( event.keyCode === $.ui.keyCode.TAB &&
+                 $( this ).data( "autocomplete" ).menu.active ) {
+                event.preventDefault();
+            }
+        })
+        .autocomplete({
+            minLength: 0,
+            source: function( request, response ) {
+                // delegate back to autocomplete, but extract the last term
+                response( $.ui.autocomplete.filter(
+                    tf, extractLast( request.term ) ) );
+            },
+            focus: function() {
+                // prevent value inserted on focus
+                return false;
+            },
+            select: function( event, ui ) {
+                var terms = split( this.value );
+                // remove the current input
+                terms.pop();
+                // add the selected item
+                terms.push( ui.item.value );
+                // add placeholder to get the comma-and-space at the end
+                terms.push( "" );
+                 this.value = terms.join( ", " );
+                return false;
+            }
+        });
+});

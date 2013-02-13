@@ -4,5 +4,7 @@
 }
 .tft-search-container {
     padding:10px;
-    background-color:silver;
+    background-color:#f8f8f8;
+    border:red solid 1px;
+    border-top:0px;
 }
