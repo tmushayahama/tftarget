@@ -67,14 +67,13 @@ function fillFamily(trans) {
                             +trans[i][0]
                             +'</label></a>').addClass('accordion-toggle');
         // var $familyName = $('<a>'+trans[i][0]+'</a>');
-        var $collapse = $('<div />').addClass('accordion-body collapse-in ');
-        var $inner = $('<div />').addClass('accordion-body collapse-in ');
+        var $collapse = $('<div />').addClass('accordion-body collapse in ');
+        var $inner = $('<div />').addClass('accordion-inner');
         
-        // $family.attr('id', trans[i][0]);
         $familyName.attr('data-toggle', 'collapse');
         $familyName.attr('data-parent', '#family-accordion');
         $familyName.attr('href', '#collapse-'+trans[i][0]);
-        $collapse.attr('id', 'collapse'+trans[i][0]);
+        $collapse.attr('id', 'collapse-'+trans[i][0]);
         
         //appending
         $familyHeading.append($familyName);
@@ -85,17 +84,15 @@ function fillFamily(trans) {
             $familyMember = $('<li><label class="checkbox"><input type="checkbox" my-parent="'+trans[i][0]+'" class="family-member '+trans[i][0]+'" value="'+trans[i][j]+'">'
                               +trans[i][j]
                               +'</label></li>');
-            //$familyMember.addClass('accordion-toggle');
-            //$familyName.attr('data-toggle', 'collapse');
             $inner.append($familyMember);
         }
         $familyAccordion.append($familyGroup);
     }
     $familyContainer.append($familyAccordion);
-    $('.dropdown-menu input').click(function (e) {
+    $('.dropdown-menu input .dropdown-menu label').click(function (e) {
         e.stopPropagation();
-        //$(".collapse").collapse();
-        //$('.dropdown-menu').toggle();
+        $(".collapse").collapse();
+        $('.dropdown-menu').toggle();
     });
 }
 
@@ -108,9 +105,6 @@ function initSearchForm () {
     */
     
     $('#tft-search-form > label').addClass('control-label ');
-    //alert($searchForm.length);
-    //$searchForm.prepend($('#tft-transcription-factor-input'));
-    //$('.tft-hidden').replaceWith($('#tft-transcription-factor-input'));
     for(var i=0, j=$searchForm.length; i<j; i+=2) {
         //alert($searchForm[i]);
         $searchForm.slice(i, i+2).wrapAll('<div class="control-group span5"/>')
@@ -226,8 +220,8 @@ function addEventHandlers() {
              }
          });
     });
-    //  $('.dropdown-toggle').dropdown();
-    //$(".collapse").collapse();*/
+    $('.dropdown-toggle').dropdown();
+    $(".collapse").collapse("toggle");
 }
 $(function() {
     
