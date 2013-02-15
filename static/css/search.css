@@ -1,6 +1,6 @@
 .tft-welcome-banner {
     background-color: lightgrey;
-    height: 60px;
+    height: 100px;
 }
 .tft-search-container {
     padding:10px;
@@ -9,6 +9,18 @@
     border-top:0px;
 }
 .tft-dropdown-container {
-    height:200px;
+    height:300px;
     overflow:auto;
+}
+
+.tft-family-heading {
+}
+
+.tft-family-toggle {
+   text-align:left;
+   height:10px;
+}
+.tft-family-select {
+    float:left;
+    margin-left:5px;
 }

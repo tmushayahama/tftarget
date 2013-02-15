@@ -43,7 +43,6 @@ def search(request):
             results = _intersect_unless_empty(results, these_results)
     return HttpResponse(str(list(results)))
 
-
 def _intersect_unless_empty(results, these_results):
     """Takes the final results set and a set of results matching one parameter
     and returns the intersection of them if the final results set is non-empty,
